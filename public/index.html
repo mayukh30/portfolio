@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayukh Sinha - Portfolio</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    </head>
+<body>
+    <div id="three-container"></div>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">Mayukh Sinha</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#hobbies">Hobbies</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="section hero">
+        <div class="container">
+            <img src="your-photo.jpg" alt="Profile Picture" class="profile-pic">
+            <h1>MAYUKH SINHA</h1>
+            <p>Full Stack Developer | IT Student | Tech Enthusiast | Learning AIML</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                <a href="#projects" class="btn btn-secondary">View Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="floating-card">
+                <p style="font-size: 1.2rem; line-height: 1.8; text-align: center;">
+                    I'm a passionate student of Jadavpur University currently in Pre-Final Year and pursuing B.E. in Information Technology . 
+                    I specialize in full-stack web development and have experience in building dynamic, 
+                    responsive applications.
+                    I am a Quick learner and  like exploring new Technologies and frameworks to stay updated with industry trends.  
+                    I enjoy solving DSA problems and when I'm not coding, you'll find me on the sports field or dance floor!
+                </p>
+                <div class="section-divider"></div>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;">
+                    <div style="text-align: center;">
+                        <h3 style="color: #00f5ff;">📧 Email</h3>
+                        <p>mayukhs.it.ug@jadavpuruniverisity.in</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <h3 style="color: #ff00ff;">📱 Phone</h3>
+                        <p>+91 ********** </p>
+                    </div>
+                    <div style="text-align: center;">
+                        <h3 style="color: #ffff00;">🎓 University</h3>
+                        <p>Jadavpur University</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section">
+        <div class="container">
+            <h2>Technical Skills</h2>
+            <div class="grid">
+                <div class="skill-item">
+                    <h3>🎨 Frontend</h3>
+                    <p>React, HTML, CSS, JavaScript, EJS, Tailwind CSS</p>
+                </div>
+                <div class="skill-item">
+                    <h3>⚙️ Backend</h3>
+                    <p>Node.js, Express.js, JavaScript, Flask</p>
+                </div>
+                <div class="skill-item">
+                    <h3>💾 Databases</h3>
+                    <p>MongoDB, MySQL, Firebase, Supabase</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🛠️ Technologies</h3>
+                    <p>Postman, GitHub, Netlify, REST API</p>
+                </div>
+                <div class="skill-item">
+                    <h3>💻 Languages</h3>
+                    <p>C, C++, Java, JavaScript, Python</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🏆 Achievements</h3>
+                    <p>2⭐ CodeChef (Max Rating - 1445),<br> 350+ questions LeetCode (Max Rating - 1657)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 style="color: #00f5ff; margin-bottom: 1rem;">🔍 Reclaim IT - Lost and Found Platform</h3>
+                        <p>Full-stack platform enabling users to report, search, and claim lost or found items with authentication and real-time updates.</p>
+                        <div style="margin: 1rem 0;">
+                            <strong>Tech Stack:</strong> React.js, Node.js, Express.js, Supabase, EJS
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <strong>Features:</strong> Google OAuth, Email notifications, User dashboards, Claim workflows
+                        </div>
+                        <a href="https://preeminent-bonbon-5ab49d.netlify.app/" class="btn btn-primary" style="margin-top: 1rem;">View Live</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 style="color: #ff00ff; margin-bottom: 1rem;">📚 JU Study Portal</h3>
+                        <p>Collaborative group project for Jadavpur University students featuring study materials, PYQs, and marketplace.</p>
+                        <div style="margin: 1rem 0;">
+                            <strong>Tech Stack:</strong> React.js, HTML, CSS, JavaScript, Bootstrap
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <strong>My Role:</strong> Frontend development, Form validation, Responsive design
+                        </div>
+                        <a href="https://ju-study-portal-g1pe.vercel.app" class="btn btn-primary" style="margin-top: 1rem;">View Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="section">
+        <div class="container">
+            <h2>Achievements & Recognition</h2>
+            <div class="floating-card">
+                <ul class="achievements-list">
+                    <li>🌟 <strong>2 Star CodeChef Coder</strong> - Maximum Rating: 1445</li>
+                    <li>💻 <strong>350+ LeetCode Problems Solved</strong> - Consistent problem-solving practice with Max Rating of 1657</li>
+                    <li>🏆 <strong>First Position in Pitch Genix 2023</strong> </li>
+                    <li>🎯 <strong>Full Stack Web Development Certified</strong> - by Udemy</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates" class="section">
+  <div class="container">
+    <h2>Certificates</h2>
+    <div class="certificates-grid">
+      <!-- Image Certificate -->
+      <div class="certificate-card floating-card">
+        <a href="./images/OCI25FNDCFA.jpeg" class="certificate-link" data-type="image">
+          <img src="./images/OCI25FNDCFA.jpeg" alt="Certificate 1" class="certificate-img">
+        </a>
+        <h3>Full Stack Web Development</h3>
+        <p>Issued by Udemy</p>
+      </div>
+      <div class="certificate-card floating-card">
+        <a href="./images/walmart.png" class="certificate-link" data-type="image">
+          <img src="./images/walmart.png" alt="Certificate 1" class="certificate-img">
+        </a>
+        <h3>Walmart Sparkathon 2025</h3>
+        <!-- <p>Issued by Udemy</p> -->
+      </div>
+      <div class="certificate-card floating-card">
+        <a href="./images/OCI25FNDCFA.jpeg" class="certificate-link" data-type="image">
+          <img src="./images/OCI25FNDCFA.jpeg" alt="Certificate 1" class="certificate-img">
+        </a>
+        <h3>Full Stack Web Development</h3>
+        <p>Issued by Udemy</p>
+      </div>
+    
+
+    </div>
+  </div>
+</section>
+
+    <section id="hobbies" class="section">
+        <div class="container">
+            <h2>My Hobbies & Interests</h2>
+            <div class="hobbies-container">
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏏</div>
+                    <h3>Cricket</h3>
+                    <p>Love batting , bowling and strategic gameplay</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🕺</div>
+                    <h3>Dance</h3>
+                    <p>Expressing creativity and emotions through movement</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏓</div>
+                    <h3>Table Tennis</h3>
+                    <p>Quick reflexes and precision - perfect for unwinding</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏀</div>
+                    <h3>Basketball</h3>
+                    <p>Team sports enthusiast - love the strategy and teamwork</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⚽</div>
+                    <h3>Football</h3>
+                    <p> Love to Rainbow Flick ( Neymar Forever)</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏸</div>
+                    <h3>Badminton</h3>
+                    <p>Fast-paced action and strategic gameplay</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🥊</div>
+                    <h3>Kickboxing</h3>
+                    <p> Bronze 🥉 in 54-57 Kg at 2nd Uttar Dinajpur District Kickboxing Championship 2018</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎬</div>
+                    <h3>Stunts</h3>
+                    <p>Adrenaline rush and precision coordination. </p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🥋</div>
+                    <h3>Karate</h3>
+                    <p>Discipline, focus, and traditional martial arts</p>
+                </div>
+                <div class="hobby-item">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏃</div>
+                    <h3>Kho Kho</h3>
+                    <p>Traditional Indian sport - speed and strategy combined</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Let's Connect</h2>
+            <!-- <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                <div class="contact-form">
+                    <h3 style="margin-bottom: 2rem; color: #00f5ff;">Send me a message</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="6" name="message" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                    </form>
+                </div> -->
+                <div class="floating-card" style="max-width: 500px;">
+                    <h3 style="margin-bottom: 2rem; color: #ff00ff;">Get in Touch</h3>
+                    <div >
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong>📧 Email:</strong><br>
+                            <a href="mailto:mayukhs.it.ug@jadavpuruniversity.in" style="color: #00f5ff;">mayukhs.it.ug@jadavpuruniversity.in</a>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong>📱 Phone:</strong><br>
+                            <a href="" style="color: #00f5ff;">+91 ***** *****</a>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <strong>💼 LinkedIn:</strong><br>
+                            <a href="https://www.linkedin.com/in/mayukh-sinha-b262a9256" style="color: #00f5ff;" target="_blank">Connect with me</a>
+                        </div>
+                        <div>
+                            <strong>💻 GitHub:</strong><br>
+                            <a href="https://github.com/mayukh30" style="color: #00f5ff;" target="_blank">Check out my code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal for full-size image -->
+<div id="certificate-modal" class="modal">
+  <span class="modal-close">&times;</span>
+  <img class="modal-content" id="modal-img">
+</div>
+
+    <script src="./script.js"></script>
+    </body>
+    </html>
