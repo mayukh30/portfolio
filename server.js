@@ -8,8 +8,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve frontend files (index.html, style.css, script.js)
+// Serve frontend files
 app.use(express.static("public"));
 
-// Start server
-app.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
