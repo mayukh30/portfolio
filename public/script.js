@@ -189,6 +189,7 @@ let scene, camera, renderer, particles;
 function initFormSubmission() {
     const form = document.getElementById('contact-form');
     const statusEl = document.getElementById('form-status');
+    const configuredApiBaseUrl = (window.API_BASE_URL || '').replace(/\/$/, '');
 
     if (!form) {
         console.error("contact-form not found in DOM");
@@ -225,7 +226,11 @@ function initFormSubmission() {
         setStatus('Sending message...', null);
 
         try {
-            const res = await fetch('/api/messages', {
+            const apiUrl = configuredApiBaseUrl
+                ? `${configuredApiBaseUrl}/api/messages`
+                : '/api/messages';
+
+            const res = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

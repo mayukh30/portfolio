@@ -65,6 +65,20 @@ app.post("/api/messages", (req, res) => {
   });
 });
 
+app.get("/api/messages", (_req, res) => {
+  const query =
+    "SELECT id, name, email, phone, message, created_at FROM messages ORDER BY id DESC LIMIT 50";
+
+  db.all(query, [], (err, rows) => {
+    if (err) {
+      console.error("Failed to fetch messages:", err.message);
+      return res.status(500).json({ error: "Failed to fetch messages." });
+    }
+
+    return res.status(200).json({ count: rows.length, messages: rows });
+  });
+});
+
 // Serve frontend files
 app.use(express.static("public"));
 
