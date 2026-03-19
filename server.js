@@ -8,12 +8,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const dbPath = path.join(__dirname, "messages.db");
+const dbPath = process.env.DB_PATH || path.join(__dirname, "messages.db");
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error("Failed to connect to database:", err.message);
     return;
   }
+
+  console.log("Using SQLite database at:", dbPath);
 
   db.run(
     `CREATE TABLE IF NOT EXISTS messages (
