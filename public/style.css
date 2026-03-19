@@ -331,6 +331,27 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .form-status {
+            min-height: 1.2rem;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .form-status.success {
+            color: #00f5ff;
+        }
+
+        .form-status.error {
+            color: #ff6b6b;
+        }
+
         .form-group {
             margin-bottom: 2rem;
         }

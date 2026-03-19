@@ -186,47 +186,62 @@ let scene, camera, renderer, particles;
                 observer.observe(el);
             });
         }
-const API_BASE_URL = "";
-
 function initFormSubmission() {
     const form = document.getElementById('contact-form');
+    const statusEl = document.getElementById('form-status');
+
     if (!form) {
-        console.error("❌ contact-form not found in DOM");
+        console.error("contact-form not found in DOM");
         return;
     }
 
+    const setStatus = (message, type) => {
+        if (!statusEl) {
+            return;
+        }
+        statusEl.textContent = message;
+        statusEl.classList.remove('success', 'error');
+        if (type) {
+            statusEl.classList.add(type);
+        }
+    };
+
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        console.log("📤 Submitting form..."); // 👈 debug log
 
         const formData = new FormData(form);
         const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            subject: formData.get('subject'),
-            message: formData.get('message')
+            name: String(formData.get('name') || '').trim(),
+            email: String(formData.get('email') || '').trim(),
+            phone: String(formData.get('phone') || '').trim(),
+            message: String(formData.get('message') || '').trim()
         };
 
-        console.log("➡️ Sending data:", data); // 👈 debug log
+        if (!data.name || !data.email || !data.phone || !data.message) {
+            setStatus('Please fill in all fields.', 'error');
+            return;
+        }
+
+        setStatus('Sending message...', null);
 
         try {
-            const res = await fetch(`/submit`, {
+            const res = await fetch('/api/messages', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
 
-            console.log("✅ Server response:", res.status);
+            const result = await res.json().catch(() => ({}));
 
             if (res.ok) {
-                alert("Form submitted successfully!");
+                setStatus(result.message || 'Message sent successfully!', 'success');
                 form.reset();
             } else {
-                alert("Error submitting form.");
+                setStatus(result.error || 'Error submitting form.', 'error');
             }
         } catch (err) {
-            console.error("⚠️ Fetch error:", err);
-            alert("Error submitting form.");
+            console.error('Fetch error:', err);
+            setStatus('Could not send message. Please try again.', 'error');
         }
     });
 }
@@ -274,8 +289,12 @@ function initFormSubmission() {
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             initThreeJS();
-            initProfilePhotoUpload();
-            initPhotoUpload();
+            if (typeof initProfilePhotoUpload === 'function') {
+                initProfilePhotoUpload();
+            }
+            if (typeof initPhotoUpload === 'function') {
+                initPhotoUpload();
+            }
             initSmoothScrolling();
             initNavbarEffect();
             initScrollAnimations();

@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-
+messages.db
 # Environment variables
 .env
 
