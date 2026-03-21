@@ -26,6 +26,7 @@ This project serves a static portfolio frontend and exposes backend APIs to:
 - express-session
 - passport
 - passport-google-oauth20
+- Rule-based chatbot engine (portfolio-specific)
 
 ### Database
 - MongoDB Atlas (via Mongoose)
@@ -111,6 +112,26 @@ Possible errors:
 - `400` invalid or missing fields
 - `500` persistence error
 
+#### `POST /api/chat`
+Chatbot endpoint for portfolio Q&A.
+
+Request body:
+
+```json
+{
+  "message": "Tell me about your skills"
+}
+```
+
+Response fields:
+- `reply`: chatbot response text
+- `topic`: response topic (`skills`, `projects`, etc.)
+- `source`: `rule-based` or `guardrail`
+
+Possible errors:
+- `400` invalid/empty/too-long input
+- `429` rate limit exceeded
+
 ### Auth
 
 #### `GET /auth/google`
@@ -146,6 +167,10 @@ APP_BASE_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=<google_oauth_client_id>
 GOOGLE_CLIENT_SECRET=<google_oauth_client_secret>
 SESSION_SECRET=<long_random_secret>
+CHAT_RATE_LIMIT_WINDOW_MS=60000
+CHAT_RATE_LIMIT_MAX=10
+CHAT_DAILY_LIMIT_GLOBAL=400
+CHAT_DAILY_LIMIT_PER_IP=60
 ```
 
 Notes:
@@ -153,6 +178,8 @@ Notes:
 - `APP_BASE_URL` should match your running app URL exactly.
 - `SESSION_SECRET` should be long and random.
 - `ADMIN_TOKEN` may still exist in older local `.env` files, but is not required in current OAuth flow.
+- `CHAT_DAILY_LIMIT_GLOBAL` sets total daily chatbot requests allowed across all users.
+- `CHAT_DAILY_LIMIT_PER_IP` sets per-IP daily chatbot request cap.
 
 ## Google OAuth Setup
 
@@ -207,6 +234,23 @@ npm start
    - `/api/admin/me`
    - `/api/admin/messages`
 5. Use refresh/logout controls as needed.
+
+## Chatbot Workflow
+
+1. User opens the chat widget on portfolio page.
+2. Frontend sends `POST /api/chat`.
+3. Backend applies per-IP rate limit.
+4. Backend applies daily budget guardrails (global and per-IP).
+5. Backend applies basic safety guardrails.
+6. Backend returns portfolio-aware rule-based response.
+
+### Example Chat Prompts
+
+- `What are Mayukh's skills?`
+- `Tell me about Mayukh's projects.`
+- `What are Mayukh's hobbies?`
+- `What kind of person is Mayukh?`
+- `How can I contact Mayukh?`
 
 ## Validation Rules for Contact Form
 

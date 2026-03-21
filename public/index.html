@@ -292,8 +292,27 @@
   <img class="modal-content" id="modal-img">
 </div>
 
+<button id="chatbot-toggle" class="chatbot-toggle" aria-label="Open chat assistant">
+    Chat
+</button>
+
+<section id="chatbot-panel" class="chatbot-panel" aria-live="polite" aria-label="Portfolio chat assistant">
+    <div class="chatbot-header">
+        <h3>Portfolio Assistant</h3>
+        <button id="chatbot-close" type="button" aria-label="Close chat">&times;</button>
+    </div>
+    <div id="chatbot-messages" class="chatbot-messages">
+        <div class="chatbot-message bot">Hi, ask me about skills, projects, achievements, or contact details.</div>
+    </div>
+    <form id="chatbot-form" class="chatbot-form">
+        <input id="chatbot-input" type="text" maxlength="300" placeholder="Ask something..." required />
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</section>
+
         <script>
-            window.API_BASE_URL = "https://my-portfolio-fhyg.onrender.com/" || "";
+            // Keep empty to use same-origin API (works for both local and deployed hosting).
+            window.API_BASE_URL = "";
         </script>
         <script src="./script.js"></script>
     </body>

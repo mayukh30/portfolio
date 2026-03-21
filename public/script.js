@@ -251,6 +251,90 @@ function initFormSubmission() {
     });
 }
 
+function initChatbot() {
+    const toggleBtn = document.getElementById('chatbot-toggle');
+    const closeBtn = document.getElementById('chatbot-close');
+    const panel = document.getElementById('chatbot-panel');
+    const form = document.getElementById('chatbot-form');
+    const input = document.getElementById('chatbot-input');
+    const messages = document.getElementById('chatbot-messages');
+
+    if (!toggleBtn || !closeBtn || !panel || !form || !input || !messages) {
+        return;
+    }
+
+    const configuredApiBaseUrl = (window.API_BASE_URL || '').replace(/\/$/, '');
+
+    const appendMessage = (text, role) => {
+        const bubble = document.createElement('div');
+        bubble.className = `chatbot-message ${role}`;
+        bubble.textContent = text;
+        messages.appendChild(bubble);
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    const setPanelState = (isOpen) => {
+        if (isOpen) {
+            panel.classList.add('open');
+            input.focus();
+            return;
+        }
+        panel.classList.remove('open');
+    };
+
+    toggleBtn.addEventListener('click', () => {
+        const isOpen = panel.classList.contains('open');
+        setPanelState(!isOpen);
+    });
+
+    closeBtn.addEventListener('click', () => {
+        setPanelState(false);
+    });
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const text = String(input.value || '').trim();
+        if (!text) {
+            return;
+        }
+
+        appendMessage(text, 'user');
+        input.value = '';
+        appendMessage('Thinking...', 'bot');
+
+        const apiUrl = configuredApiBaseUrl
+            ? `${configuredApiBaseUrl}/api/chat`
+            : '/api/chat';
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            const payload = await response.json().catch(() => ({}));
+            const loader = messages.querySelector('.chatbot-message.bot:last-child');
+            if (loader && loader.textContent === 'Thinking...') {
+                loader.remove();
+            }
+
+            if (!response.ok) {
+                appendMessage(payload.error || 'Chatbot is unavailable right now.', 'bot');
+                return;
+            }
+
+            appendMessage(payload.reply || 'I could not process that. Try another question.', 'bot');
+        } catch (_err) {
+            const loader = messages.querySelector('.chatbot-message.bot:last-child');
+            if (loader && loader.textContent === 'Thinking...') {
+                loader.remove();
+            }
+            appendMessage('Network issue. Please try again in a moment.', 'bot');
+        }
+    });
+}
+
 
         // Hobby items click animation
         function initHobbyAnimations() {
@@ -304,6 +388,7 @@ function initFormSubmission() {
             initNavbarEffect();
             initScrollAnimations();
             initFormSubmission();
+            initChatbot();
             initHobbyAnimations();
 
             // Hide scroll indicator after first scroll
