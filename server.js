@@ -8,6 +8,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 require("dotenv").config();
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -37,6 +38,7 @@ const isOAuthConfigured = missingOAuthKeys.length === 0;
 app.use(
   session({
     secret: sessionSecret || "temporary-dev-secret",
+    proxy: true,
     resave: false,
     saveUninitialized: false,
     cookie: {
