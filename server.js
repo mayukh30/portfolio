@@ -2,12 +2,162 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 const mongoUri = process.env.MONGODB_URI;
+const adminEmail = process.env.ADMIN_EMAIL;
+const appBaseUrl = process.env.APP_BASE_URL || "http://localhost:3000";
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const sessionSecret = process.env.SESSION_SECRET;
+
+const isOAuthConfigured =
+  Boolean(googleClientId) && Boolean(googleClientSecret) && Boolean(sessionSecret);
+
+app.use(
+  session({
+    secret: sessionSecret || "temporary-dev-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 12,
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+if (isOAuthConfigured) {
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: googleClientId,
+        clientSecret: googleClientSecret,
+        callbackURL: `${appBaseUrl}/auth/google/callback`,
+      },
+      (_accessToken, _refreshToken, profile, done) => {
+        const primaryEmail =
+          Array.isArray(profile.emails) && profile.emails.length > 0
+            ? String(profile.emails[0].value || "").trim().toLowerCase()
+            : "";
+
+        if (!primaryEmail || !adminEmail || primaryEmail !== adminEmail.trim().toLowerCase()) {
+          return done(null, false, { message: "Admin email is not authorized." });
+        }
+
+        return done(null, {
+          id: profile.id,
+          displayName: profile.displayName || primaryEmail,
+          email: primaryEmail,
+        });
+      }
+    )
+  );
+}
+
+function requireAdminAuth(req, res, next) {
+  if (!isOAuthConfigured) {
+    return res
+      .status(503)
+      .json({ error: "Google OAuth is not configured on this server." });
+  }
+
+  if (!adminEmail) {
+    return res
+      .status(503)
+      .json({ error: "Admin email is not configured on this server." });
+  }
+
+  if (!req.isAuthenticated || !req.isAuthenticated() || !req.user) {
+    return res.status(401).json({ error: "Unauthorized. Please sign in with Google." });
+  }
+
+  const loggedInEmail = String(req.user.email || "").trim().toLowerCase();
+  if (!loggedInEmail || loggedInEmail !== adminEmail.trim().toLowerCase()) {
+    return res.status(403).json({ error: "Forbidden. Admin email mismatch." });
+  }
+
+  return next();
+}
+
+app.get("/auth/google", (req, res, next) => {
+  if (!isOAuthConfigured) {
+    return res.redirect("/admin.html?auth=oauth-not-configured");
+  }
+
+  return passport.authenticate("google", { scope: ["profile", "email"] })(
+    req,
+    res,
+    next
+  );
+});
+
+app.get("/auth/google/callback", (req, res, next) => {
+  if (!isOAuthConfigured) {
+    return res.redirect("/admin.html?auth=oauth-not-configured");
+  }
+
+  return passport.authenticate("google", (err, user) => {
+    if (err) {
+      console.error("Google OAuth callback error:", err.message);
+      return res.redirect("/admin.html?auth=error");
+    }
+
+    if (!user) {
+      return res.redirect("/admin.html?auth=forbidden");
+    }
+
+    return req.logIn(user, (loginErr) => {
+      if (loginErr) {
+        console.error("Session login error:", loginErr.message);
+        return res.redirect("/admin.html?auth=error");
+      }
+      return res.redirect("/admin.html?auth=success");
+    });
+  })(req, res, next);
+});
+
+app.post("/auth/logout", (req, res) => {
+  req.logout((logoutErr) => {
+    if (logoutErr) {
+      return res.status(500).json({ error: "Failed to log out." });
+    }
+
+    return req.session.destroy((sessionErr) => {
+      if (sessionErr) {
+        return res.status(500).json({ error: "Failed to clear session." });
+      }
+      res.clearCookie("connect.sid");
+      return res.status(200).json({ message: "Logged out." });
+    });
+  });
+});
+
+app.get("/api/admin/me", requireAdminAuth, (req, res) => {
+  return res.status(200).json({
+    email: req.user.email,
+    name: req.user.displayName,
+  });
+});
 
 const messageSchema = new mongoose.Schema(
   {
@@ -67,7 +217,7 @@ app.post("/api/messages", (req, res) => {
     });
 });
 
-app.get("/api/messages", (_req, res) => {
+app.get("/api/admin/messages", requireAdminAuth, (_req, res) => {
   Message.find({}, { __v: 0 })
     .sort({ createdAt: -1 })
     .limit(50)
@@ -98,6 +248,18 @@ const PORT = process.env.PORT || 3000;
 if (!mongoUri) {
   console.error("MONGODB_URI is not set. Add it to your environment variables.");
   process.exit(1);
+}
+
+if (!isOAuthConfigured) {
+  console.warn(
+    "Google OAuth is not fully configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and SESSION_SECRET."
+  );
+}
+
+if (!adminEmail) {
+  console.warn(
+    "ADMIN_EMAIL is not set. Admin route /api/admin/messages will return 503 until configured."
+  );
 }
 
 mongoose

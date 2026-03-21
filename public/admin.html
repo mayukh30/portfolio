@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Messages</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+    }
+
+    .admin-shell {
+      padding-top: 6.5rem;
+      padding-bottom: 2rem;
+    }
+
+    .admin-grid {
+      display: grid;
+      gap: 1.6rem;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-title {
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, #00f5ff, #ff00ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .admin-sub {
+      color: rgba(255, 255, 255, 0.76);
+      max-width: 56ch;
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      padding: 0.55rem 0.95rem;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+    }
+
+    .admin-btn {
+      min-height: 46px;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.95rem;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .admin-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 245, 255, 0.25);
+    }
+
+    .admin-btn-google {
+      background: linear-gradient(45deg, #00f5ff, #ff00ff);
+      color: white;
+    }
+
+    .admin-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .admin-status {
+      min-height: 1.4rem;
+      margin-top: 1rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .admin-status.error {
+      color: #ff7d8a;
+    }
+
+    .admin-status.ok {
+      color: #00f5ff;
+    }
+
+    .messages-title {
+      margin-bottom: 0.8rem;
+      font-size: 1.5rem;
+      color: #00f5ff;
+    }
+
+    .messages-count {
+      color: rgba(255, 255, 255, 0.72);
+      margin-bottom: 1rem;
+    }
+
+    .list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.09), rgba(255, 0, 255, 0.09));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .msg {
+      color: rgba(255, 255, 255, 0.94);
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 0.7rem;
+    }
+
+    @media (max-width: 800px) {
+      .actions {
+        width: 100%;
+      }
+
+      .admin-btn {
+        width: 100%;
+      }
+
+      .chip {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .admin-title {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="logo">Mayukh Sinha</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="admin-shell container">
+    <div class="admin-grid">
+      <section class="floating-card">
+        <div class="admin-header">
+        <div>
+            <h1 class="admin-title">Admin Message Viewer</h1>
+            <p class="admin-sub">Sign in with your authorized Google account to access messages.</p>
+        </div>
+        <div class="actions">
+          <div id="user-chip" class="chip">Not signed in</div>
+            <button id="login-btn" class="admin-btn admin-btn-google" type="button">Sign in with Google</button>
+            <button id="refresh-btn" class="admin-btn admin-btn-secondary" type="button">Refresh</button>
+            <button id="logout-btn" class="admin-btn admin-btn-secondary" type="button">Logout</button>
+        </div>
+      </div>
+        <div id="status" class="admin-status"></div>
+      </section>
+
+      <section class="floating-card">
+        <h2 class="messages-title">Messages</h2>
+        <p id="count" class="messages-count">No data loaded yet.</p>
+        <div id="list" class="list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const loginBtn = document.getElementById("login-btn");
+    const refreshBtn = document.getElementById("refresh-btn");
+    const logoutBtn = document.getElementById("logout-btn");
+    const userChip = document.getElementById("user-chip");
+    const statusEl = document.getElementById("status");
+    const countEl = document.getElementById("count");
+    const listEl = document.getElementById("list");
+
+    function setStatus(text, type) {
+      statusEl.textContent = text;
+      statusEl.className = "admin-status";
+      if (type) {
+        statusEl.classList.add(type);
+      }
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function renderMessages(messages) {
+      if (!Array.isArray(messages) || messages.length === 0) {
+        listEl.innerHTML = "<div class='messages-count'>No messages found.</div>";
+        return;
+      }
+
+      listEl.innerHTML = messages
+        .map((m) => {
+          const created = m.created_at ? new Date(m.created_at).toLocaleString() : "-";
+          return `
+            <div class="card">
+              <div class="meta">
+                <span><strong>Name:</strong> ${escapeHtml(m.name || "-")}</span>
+                <span><strong>Email:</strong> ${escapeHtml(m.email || "-")}</span>
+                <span><strong>Phone:</strong> ${escapeHtml(m.phone || "-")}</span>
+                <span><strong>Received:</strong> ${escapeHtml(created)}</span>
+              </div>
+              <div class="msg">${escapeHtml(m.message || "")}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    async function fetchMessages() {
+      setStatus("Loading messages...", null);
+      listEl.innerHTML = "";
+
+      try {
+        const response = await fetch("/api/admin/messages", { method: "GET", credentials: "same-origin" });
+
+        const body = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          setStatus(body.error || "Failed to load messages.", "error");
+          countEl.textContent = "No data loaded.";
+          return;
+        }
+
+        const messages = Array.isArray(body.messages) ? body.messages : [];
+        countEl.textContent = `Loaded ${messages.length} message(s).`;
+        renderMessages(messages);
+        setStatus("Access granted. Messages loaded.", "ok");
+      } catch (error) {
+        setStatus("Network error while loading messages.", "error");
+        countEl.textContent = "No data loaded.";
+      }
+    }
+
+    async function loadSession() {
+      try {
+        const meRes = await fetch("/api/admin/me", { method: "GET", credentials: "same-origin" });
+        const meBody = await meRes.json().catch(() => ({}));
+
+        if (!meRes.ok) {
+          userChip.textContent = "Not signed in";
+          if (meBody && meBody.error) {
+            setStatus(meBody.error, "error");
+          }
+          countEl.textContent = "No data loaded yet.";
+          listEl.innerHTML = "";
+          return;
+        }
+
+        userChip.textContent = meBody.email || "Signed in";
+        setStatus("Signed in with Google.", "ok");
+        await fetchMessages();
+      } catch (_err) {
+        setStatus("Failed to check session.", "error");
+      }
+    }
+
+    function handleAuthHint() {
+      const authState = new URLSearchParams(window.location.search).get("auth");
+      if (authState === "forbidden") {
+        setStatus("Signed in Google account is not authorized for admin access.", "error");
+      }
+      if (authState === "oauth-not-configured") {
+        setStatus("OAuth is not configured on the server.", "error");
+      }
+      if (authState === "error") {
+        setStatus("OAuth login failed. Please try again.", "error");
+      }
+      if (authState === "success") {
+        setStatus("Google login successful.", "ok");
+      }
+      if (authState) {
+        history.replaceState({}, document.title, "/admin.html");
+      }
+    }
+
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "/auth/google";
+    });
+
+    refreshBtn.addEventListener("click", () => {
+      loadSession();
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        const response = await fetch("/auth/logout", { method: "POST", credentials: "same-origin" });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          setStatus(body.error || "Logout failed.", "error");
+          return;
+        }
+        userChip.textContent = "Not signed in";
+        countEl.textContent = "No data loaded yet.";
+        listEl.innerHTML = "";
+        setStatus("Logged out.", "ok");
+      } catch (_err) {
+        setStatus("Logout failed due to network error.", "error");
+      }
+    });
+
+    handleAuthHint();
+    loadSession();
+  </script>
+</body>
+</html>
