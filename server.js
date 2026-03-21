@@ -18,8 +18,21 @@ const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const sessionSecret = process.env.SESSION_SECRET;
 
-const isOAuthConfigured =
-  Boolean(googleClientId) && Boolean(googleClientSecret) && Boolean(sessionSecret);
+function isNonEmpty(value) {
+  return typeof value === "string" ? value.trim().length > 0 : Boolean(value);
+}
+
+const oauthConfig = {
+  GOOGLE_CLIENT_ID: googleClientId,
+  GOOGLE_CLIENT_SECRET: googleClientSecret,
+  SESSION_SECRET: sessionSecret,
+};
+
+const missingOAuthKeys = Object.entries(oauthConfig)
+  .filter(([, value]) => !isNonEmpty(value))
+  .map(([key]) => key);
+
+const isOAuthConfigured = missingOAuthKeys.length === 0;
 
 app.use(
   session({
@@ -159,6 +172,15 @@ app.get("/api/admin/me", requireAdminAuth, (req, res) => {
   });
 });
 
+app.get("/api/admin/config-status", (_req, res) => {
+  return res.status(200).json({
+    oauthConfigured: isOAuthConfigured,
+    missingOAuthKeys,
+    adminEmailConfigured: isNonEmpty(adminEmail),
+    appBaseUrl,
+  });
+});
+
 const messageSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -252,7 +274,7 @@ if (!mongoUri) {
 
 if (!isOAuthConfigured) {
   console.warn(
-    "Google OAuth is not fully configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and SESSION_SECRET."
+    `Google OAuth is not fully configured. Missing: ${missingOAuthKeys.join(", ")}`
   );
 }
 

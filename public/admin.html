@@ -282,14 +282,14 @@
       }
     }
 
-    async function loadSession() {
+    async function loadSession(preserveStatusMessage = false) {
       try {
         const meRes = await fetch("/api/admin/me", { method: "GET", credentials: "same-origin" });
         const meBody = await meRes.json().catch(() => ({}));
 
         if (!meRes.ok) {
           userChip.textContent = "Not signed in";
-          if (meBody && meBody.error) {
+          if (!preserveStatusMessage && meBody && meBody.error) {
             setStatus(meBody.error, "error");
           }
           countEl.textContent = "No data loaded yet.";
@@ -307,21 +307,28 @@
 
     function handleAuthHint() {
       const authState = new URLSearchParams(window.location.search).get("auth");
+      let shouldPreserveHint = false;
       if (authState === "forbidden") {
         setStatus("Signed in Google account is not authorized for admin access.", "error");
+        shouldPreserveHint = true;
       }
       if (authState === "oauth-not-configured") {
         setStatus("OAuth is not configured on the server.", "error");
+        shouldPreserveHint = true;
       }
       if (authState === "error") {
         setStatus("OAuth login failed. Please try again.", "error");
+        shouldPreserveHint = true;
       }
       if (authState === "success") {
         setStatus("Google login successful.", "ok");
+        shouldPreserveHint = true;
       }
       if (authState) {
         history.replaceState({}, document.title, "/admin.html");
       }
+
+      return shouldPreserveHint;
     }
 
     loginBtn.addEventListener("click", () => {
@@ -349,8 +356,8 @@
       }
     });
 
-    handleAuthHint();
-    loadSession();
+    const shouldPreserveHint = handleAuthHint();
+    loadSession(shouldPreserveHint);
   </script>
 </body>
 </html>
