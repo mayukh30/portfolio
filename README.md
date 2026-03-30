@@ -156,30 +156,6 @@ Possible errors:
 - `403` signed-in email not authorized
 - `503` OAuth/admin config missing
 
-## Environment Variables
-
-Create a `.env` file in project root.
-
-```env
-MONGODB_URI=<your_mongodb_connection_string>
-ADMIN_EMAIL=<your_authorized_google_email>
-APP_BASE_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=<google_oauth_client_id>
-GOOGLE_CLIENT_SECRET=<google_oauth_client_secret>
-SESSION_SECRET=<long_random_secret>
-CHAT_RATE_LIMIT_WINDOW_MS=60000
-CHAT_RATE_LIMIT_MAX=10
-CHAT_DAILY_LIMIT_GLOBAL=400
-CHAT_DAILY_LIMIT_PER_IP=60
-```
-
-Notes:
-- `ADMIN_EMAIL` must match the Google account used for admin login.
-- `APP_BASE_URL` should match your running app URL exactly.
-- `SESSION_SECRET` should be long and random.
-- `ADMIN_TOKEN` may still exist in older local `.env` files, but is not required in current OAuth flow.
-- `CHAT_DAILY_LIMIT_GLOBAL` sets total daily chatbot requests allowed across all users.
-- `CHAT_DAILY_LIMIT_PER_IP` sets per-IP daily chatbot request cap.
 
 ## Google OAuth Setup
 
@@ -260,21 +236,6 @@ Server-side validation ensures:
 - email format is valid.
 
 Invalid payload returns `400` with an error message.
-
-## Security Notes
-
-- Never commit `.env` to git.
-- Rotate credentials immediately if exposed.
-- Use a strong `SESSION_SECRET`.
-- In production, use HTTPS and set `NODE_ENV=production` for secure cookies.
-- Restrict admin inbox by a single authorized `ADMIN_EMAIL`.
-
-## Deployment Notes
-
-For deployment, update:
-- `APP_BASE_URL` to your live domain,
-- Google OAuth authorized origins and redirect URI to live URLs,
-- `NODE_ENV=production`.
 
 ## Troubleshooting
 
