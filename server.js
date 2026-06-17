@@ -12,6 +12,21 @@ app.set("trust proxy", 1);
 app.use(cors());
 app.use(bodyParser.json());
 
+const frontendUrl = process.env.FRONTEND_URL || "";
+
+// Redirect browser visits to Vercel frontend (skip API & auth routes)
+if (frontendUrl) {
+  app.use((req, res, next) => {
+    if (
+      req.path.startsWith("/api") ||
+      req.path.startsWith("/auth")
+    ) {
+      return next();
+    }
+    return res.redirect(301, frontendUrl + req.path);
+  });
+}
+
 const mongoUri = process.env.MONGODB_URI;
 const adminEmail = process.env.ADMIN_EMAIL;
 const appBaseUrl = process.env.APP_BASE_URL || "http://localhost:3000";
@@ -253,18 +268,18 @@ function buildChatbotReply(rawMessage) {
     };
   }
 
-  if (/skill|tech stack|technology|frontend|backend|database/.test(normalized)) {
+  if (/skill|tech stack|technology|frontend|backend|database|ai|ml|devops|lang/.test(normalized)) {
     return {
       reply:
-        "Mayukh works with React, HTML, CSS, JavaScript, Node.js, Express.js, Flask, MongoDB, MySQL, Firebase, and Supabase.",
+        "Mayukh works with React, Vite, Node.js, Express.js, FastAPI, MongoDB, Redis, Pinecone, Supabase. AI/ML: PyTorch, TensorFlow, LangChain, LangGraph, YOLO, SHAP, scikit-learn. DevOps: Docker, GitHub Actions, Vercel, HF Spaces.",
       topic: "skills",
     };
   }
 
-  if (/project|reclaim|study portal|ju/.test(normalized)) {
+  if (/project|reclaim|study portal|ju|sentravision|intelliloan|parsecv|loan|resume|security|surveillance/.test(normalized)) {
     return {
       reply:
-        "Featured projects include Reclaim IT (lost-and-found platform with auth and claim workflows) and JU Study Portal (student resources platform).",
+        "Featured projects: SentraVision (Agentic AI security platform with YOLO + LangGraph), IntelliLoan (ML loan prediction with SHAP XAI), ParseCV (AI resume builder with LLM fallback), Reclaim IT (lost-and-found platform), and JU Study Portal.",
       topic: "projects",
     };
   }

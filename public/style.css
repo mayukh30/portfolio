@@ -502,6 +502,128 @@
         }
 
 
+/* ───── Skill Tags ───── */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: rgba(0, 245, 255, 0.1);
+    border: 1px solid rgba(0, 245, 255, 0.25);
+    color: #c0faff;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.skill-tag:hover {
+    background: rgba(0, 245, 255, 0.25);
+    border-color: #00f5ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 245, 255, 0.2);
+}
+
+/* ───── Project Highlights ───── */
+.project-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.highlight-item {
+    display: block;
+    font-size: 0.88rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 3px solid rgba(0, 245, 255, 0.4);
+    color: rgba(255, 255, 255, 0.85);
+    transition: all 0.25s ease;
+}
+
+.highlight-item:hover {
+    background: rgba(0, 245, 255, 0.08);
+    border-left-color: #00f5ff;
+    transform: translateX(6px);
+}
+
+/* ───── Project Tech Tags ───── */
+.project-tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+}
+
+.tech-tag {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.12), rgba(0, 245, 255, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+}
+
+.tech-tag:hover {
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.25), rgba(0, 245, 255, 0.25));
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* ───── Featured Project Badge ───── */
+.featured-project {
+    position: relative;
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    background: rgba(0, 245, 255, 0.03);
+}
+
+.featured-project::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.4), rgba(255, 0, 255, 0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.project-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff6b35, #ff0055);
+    color: white;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(255, 0, 85, 0.4);
+    z-index: 2;
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { box-shadow: 0 4px 14px rgba(255, 0, 85, 0.4); }
+    50% { box-shadow: 0 4px 20px rgba(255, 0, 85, 0.7); }
+}
+
         .certificates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
