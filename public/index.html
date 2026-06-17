@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mayukh Sinha - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <link rel="stylesheet" href="./style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    </head>
+</head>
 <body>
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
     <div id="three-container"></div>
 
     <nav class="navbar">
@@ -75,75 +82,73 @@
                 <div class="skill-item">
                     <h3>🎨 Frontend & Backend</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">React.js</span>
-                        <span class="skill-tag">Vite</span>
-                        <span class="skill-tag">Tailwind CSS</span>
-                        <span class="skill-tag">Bootstrap</span>
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Express.js</span>
-                        <span class="skill-tag">REST APIs</span>
-                        <span class="skill-tag">FastAPI</span>
+                        <span class="skill-tag"><i class="devicon-react-original"></i>React.js</span>
+                        <span class="skill-tag"><i class="devicon-vitejs-plain"></i>Vite</span>
+                        <span class="skill-tag"><i class="devicon-tailwindcss-plain"></i>Tailwind CSS</span>
+                        <span class="skill-tag"><i class="devicon-bootstrap-plain"></i>Bootstrap</span>
+                        <span class="skill-tag"><i class="devicon-nodejs-plain"></i>Node.js</span>
+                        <span class="skill-tag"><i class="devicon-express-original"></i>Express.js</span>
+                        <span class="skill-tag"><i class="devicon-fastapi-plain"></i>FastAPI</span>
+                        <span class="skill-tag"><i class="devicon-html5-plain"></i>HTML5</span>
+                        <span class="skill-tag"><i class="devicon-css3-plain"></i>CSS3</span>
                     </div>
                 </div>
                 <div class="skill-item">
                     <h3>💾 Database & Cloud</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">MongoDB</span>
-                        <span class="skill-tag">Redis</span>
-                        <span class="skill-tag">Pinecone</span>
-                        <span class="skill-tag">Cloudinary</span>
-                        <span class="skill-tag">Supabase</span>
+                        <span class="skill-tag"><i class="devicon-mongodb-plain"></i>MongoDB</span>
+                        <span class="skill-tag"><i class="devicon-redis-plain"></i>Redis</span>
+                        <span class="skill-tag"><img src="https://avatars.githubusercontent.com/u/54333248" class="skill-icon-img" alt="Pinecone">Pinecone</span>
+                        <span class="skill-tag"><img src="https://res.cloudinary.com/demo/image/upload/cloudinary_icon_for_white_bg.svg" class="skill-icon-img" alt="Cloudinary">Cloudinary</span>
+                        <span class="skill-tag"><i class="devicon-supabase-plain"></i>Supabase</span>
                     </div>
                 </div>
                 <div class="skill-item">
                     <h3>🤖 AI/ML & Data Science</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">PyTorch</span>
-                        <span class="skill-tag">TensorFlow</span>
-                        <span class="skill-tag">LangChain</span>
-                        <span class="skill-tag">LangGraph</span>
-                        <span class="skill-tag">YOLO</span>
-                        <span class="skill-tag">SHAP</span>
-                        <span class="skill-tag">Scikit-learn</span>
-                        <span class="skill-tag">XGBoost</span>
-                        <span class="skill-tag">OpenRouter API</span>
-                        <span class="skill-tag">NumPy</span>
-                        <span class="skill-tag">Pandas</span>
-                        <span class="skill-tag">Matplotlib</span>
+                        <span class="skill-tag"><i class="devicon-pytorch-plain"></i>PyTorch</span>
+                        <span class="skill-tag"><i class="devicon-tensorflow-original"></i>TensorFlow</span>
+                        <span class="skill-tag">🦜 LangChain</span>
+                        <span class="skill-tag">🕸️ LangGraph</span>
+                        <span class="skill-tag">👁️ YOLO</span>
+                        <span class="skill-tag"><i class="devicon-scikitlearn-plain"></i>Scikit-learn</span>
+                        <span class="skill-tag">📊 XGBoost</span>
+                        <span class="skill-tag"><i class="devicon-numpy-plain"></i>NumPy</span>
+                        <span class="skill-tag"><i class="devicon-pandas-plain"></i>Pandas</span>
+                        <span class="skill-tag"><i class="devicon-matplotlib-plain"></i>Matplotlib</span>
+                        <span class="skill-tag">🔍 SHAP / XAI</span>
                     </div>
                 </div>
                 <div class="skill-item">
                     <h3>💻 Languages</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">HTML</span>
-                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag"><i class="devicon-cplusplus-plain"></i>C++</span>
+                        <span class="skill-tag"><i class="devicon-javascript-plain"></i>JavaScript</span>
+                        <span class="skill-tag"><i class="devicon-python-plain"></i>Python</span>
+                        <span class="skill-tag"><i class="devicon-html5-plain"></i>HTML</span>
                     </div>
                 </div>
                 <div class="skill-item">
                     <h3>🚀 DevOps</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">GitHub Actions</span>
-                        <span class="skill-tag">Hugging Face Spaces</span>
-                        <span class="skill-tag">Docker</span>
-                        <span class="skill-tag">Vercel</span>
+                        <span class="skill-tag"><i class="devicon-githubactions-plain"></i>GitHub Actions</span>
+                        <span class="skill-tag">🤗 Hugging Face</span>
+                        <span class="skill-tag"><i class="devicon-docker-plain"></i>Docker</span>
+                        <span class="skill-tag"><i class="devicon-vercel-plain"></i>Vercel</span>
                     </div>
                 </div>
                 <div class="skill-item">
                     <h3>🧠 Concepts</h3>
                     <div class="skill-tags">
-                        <span class="skill-tag">MVC Architecture</span>
-                        <span class="skill-tag">MERN</span>
-                        <span class="skill-tag">CRUD</span>
-                        <span class="skill-tag">CI/CD</span>
-                        <span class="skill-tag">RAG</span>
-                        <span class="skill-tag">Generative AI</span>
-                        <span class="skill-tag">Agentic AI</span>
-                        <span class="skill-tag">NLP</span>
-                        <span class="skill-tag">Computer Vision</span>
-                        <span class="skill-tag">Multimodal AI</span>
-                        <span class="skill-tag">XAI</span>
+                        <span class="skill-tag">🏗️ MVC Architecture</span>
+                        <span class="skill-tag">⚡ MERN Stack</span>
+                        <span class="skill-tag">🔄 CI/CD</span>
+                        <span class="skill-tag">🔗 RAG</span>
+                        <span class="skill-tag">✨ Generative AI</span>
+                        <span class="skill-tag">🤖 Agentic AI</span>
+                        <span class="skill-tag">💬 NLP</span>
+                        <span class="skill-tag">👁️ Computer Vision</span>
+                        <span class="skill-tag">🎭 Multimodal AI</span>
                     </div>
                 </div>
             </div>

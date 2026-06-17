@@ -390,11 +390,12 @@ function initChatbot() {
             initFormSubmission();
             initChatbot();
             initHobbyAnimations();
+            initCustomCursor();
 
             // Hide scroll indicator after first scroll
             window.addEventListener('scroll', function() {
                 const indicator = document.querySelector('.scroll-indicator');
-                if (window.scrollY > 100) {
+                if (indicator && window.scrollY > 100) {
                     indicator.style.opacity = '0';
                 }
             }, { once: true });
@@ -443,3 +444,121 @@ function initChatbot() {
 
         // Initialize burst effect
         document.addEventListener('DOMContentLoaded', addParticleInteraction);
+
+
+// ─────────────────────────────────────────────
+// Custom Cursor + Trail + Spotlight
+// ─────────────────────────────────────────────
+function initCustomCursor() {
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+
+    // Spotlight element
+    const spotlight = document.createElement('div');
+    spotlight.className = 'spotlight';
+    document.body.appendChild(spotlight);
+
+    // Trail canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = 'cursor-trail';
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    window.addEventListener('resize', () => {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // State
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+    const trail = [];
+    const MAX_TRAIL = 28;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        // Dot — instant
+        dot.style.left = mouseX + 'px';
+        dot.style.top  = mouseY + 'px';
+
+        // Spotlight — slightly delayed via CSS transition
+        spotlight.style.left = mouseX + 'px';
+        spotlight.style.top  = mouseY + 'px';
+
+        // Trail
+        trail.push({ x: mouseX, y: mouseY, age: 0 });
+        if (trail.length > MAX_TRAIL) trail.shift();
+    });
+
+    // Ring follows with lerp (smooth lag)
+    function animateCursor() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        ring.style.left = ringX + 'px';
+        ring.style.top  = ringY + 'px';
+
+        // Draw trail
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < trail.length; i++) {
+            const t = trail[i];
+            t.age++;
+            const lifeRatio = 1 - (t.age / MAX_TRAIL);
+            const radius = lifeRatio * 5 + 1;
+            const alpha  = lifeRatio * 0.6;
+
+            // Colour shifts cyan → magenta along trail
+            const hue = 180 + (1 - lifeRatio) * 120;
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${hue}, 100%, 70%, ${alpha})`;
+            ctx.fill();
+        }
+        // Remove dead particles
+        for (let i = trail.length - 1; i >= 0; i--) {
+            if (trail[i].age >= MAX_TRAIL) trail.splice(i, 1);
+        }
+
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Click ripple burst
+    document.addEventListener('click', (e) => {
+        const ripple = document.createElement('div');
+        Object.assign(ripple.style, {
+            position: 'fixed',
+            left: e.clientX + 'px',
+            top:  e.clientY + 'px',
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            border: '2px solid #00f5ff',
+            pointerEvents: 'none',
+            zIndex: '99996',
+            transform: 'translate(-50%, -50%) scale(1)',
+            transition: 'transform 0.5s ease, opacity 0.5s ease',
+            opacity: '1',
+        });
+        document.body.appendChild(ripple);
+        requestAnimationFrame(() => {
+            ripple.style.transform = 'translate(-50%, -50%) scale(12)';
+            ripple.style.opacity = '0';
+        });
+        setTimeout(() => ripple.remove(), 550);
+    });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+        dot.style.opacity  = '0';
+        ring.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+        dot.style.opacity  = '1';
+        ring.style.opacity = '1';
+    });
+}
