@@ -14,12 +14,14 @@ app.use(bodyParser.json());
 
 const frontendUrl = process.env.FRONTEND_URL || "";
 
-// Redirect browser visits to Vercel frontend (skip API & auth routes)
+// Redirect browser visits to Vercel frontend (skip API, Auth, and Admin routes)
 if (frontendUrl) {
   app.use((req, res, next) => {
     if (
       req.path.startsWith("/api") ||
-      req.path.startsWith("/auth")
+      req.path.startsWith("/auth") ||
+      req.path === "/admin.html" ||
+      req.path === "/style.css"
     ) {
       return next();
     }
