@@ -46,7 +46,6 @@ portfolio/
     images/
   server.js           # Express app, API routes, auth, DB
   package.json
-  .env                # Local environment configuration (not committed)
 ```
 
 ## System Architecture
